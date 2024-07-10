@@ -8,11 +8,11 @@ out/
 /broadcast/**/dry-run/
 
 # Docs
-docs/
+#docs/
 
 # Dotenv file
 .env
-.notes.md
+#.notes.md
 broadcast
 
 .DS_Store
