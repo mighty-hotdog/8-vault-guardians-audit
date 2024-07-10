@@ -39,4 +39,4 @@ slither :; slither . --config-file slither.config.json --checklist > ./artifacts
 
 aderyn :; aderyn . -o ./artifacts/aderyn_report.md
 
-cloc :; cloc "./src" "./script" --hide-rate --out=./artifacts/cloc_report
+cloc :; cloc "./src" "./script" --by-file-by-lang --hide-rate --out=./artifacts/cloc_report
