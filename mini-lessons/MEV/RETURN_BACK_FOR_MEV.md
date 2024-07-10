@@ -1,3 +1,3 @@
-Puppy Raffle: SeletWinner & Refund
+Puppy Raffle: SelectWinner & Refund
 TSwapPool::deposit
 ThunderLoan::deposit
