@@ -98,7 +98,7 @@ contract VaultGuardians is Ownable, VaultGuardiansBase {
     // IMPACT: medium - can cause really crazy gas costs
     // LIKELIHOOD: high - attacker can keep doing this all day long
     // #todo write the POC to check if this exploit is valid
-    // #q is it possible to repeatedly call this function with a malicious contract address as the input parameter `asset`, which has a balanceOf() function that loops endlessly to eat up the whole transaction gas limit and then reverts due to insufficient gas to complete the original sweepErc20s() call?
+    // #q is it possible to repeatedly call this function with a malicious contract address as the input parameter `asset`, which has a balanceOf() function that loops endlessly to eat up the whole transaction gas limit and then cause a revert due to insufficient gas to complete the original sweepErc20s() call?
     function sweepErc20s(IERC20 asset) external {
         uint256 amount = asset.balanceOf(address(this));
         emit VaultGuardians__SweptTokens(address(asset));

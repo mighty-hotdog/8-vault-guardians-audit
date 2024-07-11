@@ -101,7 +101,7 @@ contract VaultShares is ERC4626, IVaultShares, AaveAdapter, UniswapAdapter, Reen
         i_vaultGuardians = constructorData.vaultGuardians;
         s_isActive = true;
         updateHoldingAllocation(constructorData.allocationData);
-
+        // #q is it a problem to make external calls from within the constructor? what happens when they revert, or take a long time to return?
         // External calls
         i_aaveAToken =
             IERC20(IPool(constructorData.aavePool).getReserveData(address(constructorData.asset)).aTokenAddress);
@@ -112,6 +112,9 @@ contract VaultShares is ERC4626, IVaultShares, AaveAdapter, UniswapAdapter, Reen
      * @notice Sets the vault as not active, which means that the vault guardian has quit
      * @notice Users will not be able to invest in this vault, however, they will be able to withdraw their deposited assets
      */
+    // #audit IVaultShares interface declares this function as external, however it is implemented here as public
+    // IMPACT: ???
+    // LIKELIHOOD: ???
     function setNotActive() public onlyVaultGuardians isActive {
         s_isActive = false;
         emit NoLongerActive();
@@ -121,6 +124,9 @@ contract VaultShares is ERC4626, IVaultShares, AaveAdapter, UniswapAdapter, Reen
      * @notice Allows Vault Guardians to update their allocation ratio (and thus, their strategy of investment)
      * @param tokenAllocationData The new allocation data
      */
+    // #audit IVaultShares interface declares this function as external, however it is implemented here as public
+    // IMPACT: ???
+    // LIKELIHOOD: ???
     function updateHoldingAllocation(AllocationData memory tokenAllocationData) public onlyVaultGuardians isActive {
         uint256 totalAllocation = tokenAllocationData.holdAllocation + tokenAllocationData.uniswapAllocation
             + tokenAllocationData.aaveAllocation;

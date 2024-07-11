@@ -19,7 +19,9 @@ interface IVaultShares is IERC4626, IVaultData {
         address weth;
         address usdc;
     }
-
+    // #audit IVaultShares interface declares following 2 functions as external here, however VaultShares implements them as public
+    // IMPACT: ???
+    // LIKELIHOOD: ???
     function updateHoldingAllocation(AllocationData memory tokenAllocationData) external;
 
     function setNotActive() external;
