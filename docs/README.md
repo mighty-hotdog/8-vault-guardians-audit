@@ -1,7 +1,7 @@
 # Vault Guardians
 
 <p align="center">
-<img src="./vault-guardians.png" width="400" alt="vault-guardians">
+<img src="../images/vault-guardians.png" width="400" alt="vault-guardians">
 </p>
 
 - [Vault Guardians](#vault-guardians)
@@ -18,6 +18,7 @@
     - [Test Coverage](#test-coverage)
 - [Misc](#misc)
 - [Audit Scope Details](#audit-scope-details)
+- [Known issues](#known-issues)
 
 ## About
 
