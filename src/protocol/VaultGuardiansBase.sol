@@ -69,6 +69,7 @@ contract VaultGuardiansBase is AStaticTokenData, IVaultData {
     uint256 internal s_guardianAndDaoCut = 1000;
 
     // The guardian's address mapped to the asset, mapped to the allocation data
+    // #audit-info recommend clearer comment. it is actually mapped to IVaultShares which offers a method updateHoldingAllocation() to update the allocation, but does not provide access to the allocation data itself
     mapping(address guardianAddress => mapping(IERC20 asset => IVaultShares vaultShares)) private s_guardians;
     mapping(address token => bool approved) private s_isApprovedToken;
 
@@ -94,6 +95,9 @@ contract VaultGuardiansBase is AStaticTokenData, IVaultData {
     /*//////////////////////////////////////////////////////////////
                                FUNCTIONS
     //////////////////////////////////////////////////////////////*/
+    // #qanswered what is the effect of passing in another ERC20 token that is not LINK? what if the same is done for USDC and/or WETH?
+    //  seems like no effect as these tokens are just being used as generic ERC20 tokens with none of their unique properties referenced
+    // #q all these addresses are passed in via NetworkConfig with no correctness check for any of them. could malicious contract addresses be passed in here?
     constructor(
         address aavePool,
         address uniswapV2Router,
@@ -120,6 +124,9 @@ contract VaultGuardiansBase is AStaticTokenData, IVaultData {
      * 
      * @param wethAllocationData the allocation data for the WETH vault
      */
+    // #e any user can become a Guardian by calling this function. a new WETH vault is created for the new Guardian.
+    // #q vault name and symbol are not unique, only the Guardian is unique??
+    // #q any restriction on number/type of vaults a user can become Guardian for??
     function becomeGuardian(AllocationData memory wethAllocationData) external returns (address) {
         VaultShares wethVault =
         new VaultShares(IVaultShares.ConstructorData({
@@ -269,7 +276,11 @@ contract VaultGuardiansBase is AStaticTokenData, IVaultData {
         s_guardians[msg.sender][token] = IVaultShares(address(tokenVault));
         emit GuardianAdded(msg.sender, token);
         i_vgToken.mint(msg.sender, s_guardianStakePrice);
+        // #e safeTransferFrom() of, say weth, from caller to VaultGuardian contract
+        //  spends VaultGuardian contract's weth allowance from caller
+        //  so in effect, VaultGuardian contract holds the s_guardianStakePrice balance
         token.safeTransferFrom(msg.sender, address(this), s_guardianStakePrice);
+        // #e caller approves vault contract with weth allowance == s_guardianStakePrice
         bool succ = token.approve(address(tokenVault), s_guardianStakePrice);
         if (!succ) {
             revert VaultGuardiansBase__TransferFailed();

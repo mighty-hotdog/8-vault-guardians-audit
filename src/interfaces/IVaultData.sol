@@ -8,7 +8,8 @@ interface IVaultData {
      * @notice uniswapAllocation is the ratio of tokens to add as liquidity in Uniswap v2
      * @notice aaveAllocation is the ratio of tokens to provide as lending amount in Aave v3
      */
-    // #qanswered holdAllocation + uniswapAllocation + aaveAllocation == ALLOCATION_PRECISION == 1000
+    // #qanswered holdAllocation + uniswapAllocation + aaveAllocation == VaultShares.ALLOCATION_PRECISION == 1000
+    //  ALLOCATION_PRECISION is a constant
     struct AllocationData {
         uint256 holdAllocation; // hodl
         uint256 uniswapAllocation; // Simmilar to T-Swap
